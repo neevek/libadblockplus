@@ -16,7 +16,7 @@ endif
 
 TARGET_OS ?= ${HOST_OS}
 ABP_TARGET_ARCH ?= ${HOST_ARCH}
-Configuration ?= debug
+Configuration ?= release
 
 # Default V8 directories
 LIBV8_INCLUDE_DIR ?= $(shell pwd -L)/third_party/prebuilt-v8/include
@@ -26,7 +26,7 @@ BUILD_DIR ?=$(shell pwd -L)/build
 
 ifeq (${TARGET_OS},android)
 Configuration ?= release
-ANDROID_PLATFORM_LEVEL=android-16
+ANDROID_PLATFORM_LEVEL=android-21
 ANDROID_FIXES=
 ifeq ($(ABP_TARGET_ARCH),arm)
 ANDROID_ABI = armeabi-v7a
@@ -51,7 +51,7 @@ endif
 
 GYP_PARAMETERS=host_arch=${HOST_ARCH} OS=${TARGET_OS} target_arch=${ABP_TARGET_ARCH}
 ifneq "$(and ${LIBV8_LIB_DIR}, ${LIBV8_INCLUDE_DIR})" ""
-GYP_PARAMETERS+= libv8_lib_dir=${LIBV8_LIB_DIR} libv8_include_dir=${LIBV8_INCLUDE_DIR} libv8_show_warnings=${libv8_show_warnings}
+GYP_PARAMETERS+= libv8_lib_dir=${LIBV8_LIB_DIR} libv8_include_dir=${LIBV8_INCLUDE_DIR} libv8_show_warnings=${libv8_show_warnings} library=shared_library
 else
 $(error "V8 directories are not specified")
 endif
@@ -88,7 +88,7 @@ ifeq ($(TARGET_OS),android)
 SUB_ACTION ?= installed_modules
 all: ensure_dependencies
 	GYP_DEFINES="${GYP_PARAMETERS}" \
-	python ./make_gyp_wrapper.py --depth=. -f make-android -Ilibadblockplus.gypi --generator-output=${BUILD_DIR} -Gandroid_ndk_version=r16b libadblockplus.gyp
+	python ./make_gyp_wrapper.py --depth=. -f make-android -Ilibadblockplus.gypi --generator-output=${BUILD_DIR} -Gandroid_ndk_version=r17b libadblockplus.gyp
 	$(ANDROID_NDK_ROOT)/ndk-build -C ${BUILD_DIR} ${SUB_ACTION} \
 	BUILDTYPE=Release \
 	APP_ABI=$(ANDROID_ABI) \

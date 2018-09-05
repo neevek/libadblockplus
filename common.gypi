@@ -54,7 +54,10 @@
     'target_conditions': [
       ['_type=="static_library"', {
         'standalone_static_library': 1
-      }]
+      }],
+      ['_type=="shared_library"', {
+        'standalone_shared_library': 1
+      }],
     ]
   }
 }

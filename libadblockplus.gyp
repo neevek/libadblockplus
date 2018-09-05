@@ -92,7 +92,7 @@
         'user_libraries': [
           '<@(libv8_libs)'
         ],
-        'standalone_static_library': 1, # disable thin archives
+        'standalone_static_library': 0, # disable thin archives
       }],
       ['have_curl==1',
         {
